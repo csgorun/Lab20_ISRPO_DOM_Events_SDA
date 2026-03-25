@@ -16,13 +16,13 @@ text.style.fontSize = "18px";
 text.style.fontStyle = "italic";
 text.style.color = "darkgreen";
 
- const btn = document.getElementById("btn");
+const btn = document.getElementById("btn");
 
- btn.addEventListener("click", () => {
+btn.addEventListener("click", () => {
     alert("Кнопка нажата!");
     btn.style.backgroundColor = "#4CAF50";
     btn.style.color = "white";
- });
+});
 
 const input = document.getElementById("nameInput");
 const button = document.getElementById("showName");
@@ -32,7 +32,7 @@ button.addEventListener("click", () => {
     if (input.value.trim() !== "") {
         output.textContent = `Привет, ${input.value}!`;
         output.style.color = "green";
-    }else{
+    } else {
         output.textContent = "Пожалуйста, введите имя!";
         output.style.color = "green";
     }
@@ -52,9 +52,25 @@ const usernameInput = document.getElementById("username");
 const ageInput = document.getElementById("age");
 const result = document.getElementById("formResult");
 
-form.addEventListener("sumbit", (event) => {
+form.addEventListener("submit", (event) => {  // 🔧 "sumbit" → "submit"
     event.preventDefault();
-    const name = usernameInput.value;
-    const age = ageInput.value;
-    result.textContent = `Имя: ${name}, Возраст: ${age}`;
+    
+    const name = usernameInput.value.trim();
+    const age = Number(ageInput.value);
+    if (name === "") {
+        result.textContent = "Ошибка: Имя не может быть пустым!";
+        result.style.color = "red";  // 🔧 "colot" → "color"
+        usernameInput.focus();
+        return;  // ✅ Теперь внутри функции — работает корректно
+    }
+    if (isNaN(age) || age <= 0 || age > 120) {
+        result.textContent = "Ошибка: Введите корректный возраст (от 1 до 120)!";
+        result.style.color = "red";
+        ageInput.focus();
+        ageInput.value = "";
+        return;
+    }
+    result.textContent = `Данные сохранены: ${name}, ${age} лет`;
+    result.style.color = "green";
+    form.reset();
 });
